@@ -2,6 +2,8 @@ package com.github.viniciusffj.wiremock;
 
 import com.github.tomakehurst.wiremock.extension.Parameters;
 import com.github.tomakehurst.wiremock.http.ResponseDefinition;
+import com.github.viniciusffj.wiremock.http.HttpClient;
+import com.github.viniciusffj.wiremock.http.HttpClientResponse;
 import com.google.common.collect.ImmutableMap;
 import org.junit.Before;
 import org.junit.Test;

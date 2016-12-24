@@ -1,4 +1,4 @@
-package com.github.viniciusffj.wiremock;
+package com.github.viniciusffj.wiremock.http;
 
 import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
 import org.junit.Before;

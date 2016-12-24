@@ -6,6 +6,7 @@ import com.github.tomakehurst.wiremock.extension.Parameters;
 import com.github.tomakehurst.wiremock.extension.ResponseDefinitionTransformer;
 import com.github.tomakehurst.wiremock.http.Request;
 import com.github.tomakehurst.wiremock.http.ResponseDefinition;
+import com.github.viniciusffj.wiremock.http.HttpClient;
 
 public class HttpRequestMaker extends ResponseDefinitionTransformer {
 

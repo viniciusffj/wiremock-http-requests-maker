@@ -1,4 +1,4 @@
-package com.github.viniciusffj.wiremock;
+package com.github.viniciusffj.wiremock.http;
 
 public class HttpClientResponse {
     private boolean hasError;
