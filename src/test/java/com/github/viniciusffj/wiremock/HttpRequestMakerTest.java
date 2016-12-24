@@ -20,5 +20,9 @@ public class HttpRequestMakerTest {
         assertThat(httpRequestMaker.applyGlobally(), is(false));
     }
 
+    @Test
+    public void should_register_correct_name() throws Exception {
+        assertThat(httpRequestMaker.getName(), is("http-request-maker"));
 
+    }
 }
