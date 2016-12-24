@@ -10,6 +10,9 @@ repositories {
 
 dependencies {
     compile 'org.slf4j:slf4j-api:1.7.21'
+    compile group: 'com.github.tomakehurst', name: 'wiremock', version: '2.4.1'
+    compile 'com.mashape.unirest:unirest-java:1.4.9'
+
 
     testCompile 'junit:junit:4.12'
 }
