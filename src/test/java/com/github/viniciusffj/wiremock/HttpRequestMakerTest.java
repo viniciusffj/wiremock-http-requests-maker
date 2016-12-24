@@ -46,13 +46,14 @@ public class HttpRequestMakerTest {
     public void should_not_make_get_call_when_no_parameter() throws Exception {
         httpRequestMaker.transform(null, ResponseDefinition.ok(), null, Parameters.empty());
 
-        verify(httpClient, never()).execute(anyString(), eq(HttpMethod.GET));
+        verify(httpClient, never()).execute(anyString(), any(HttpMethod.class));
     }
 
     @Test
     public void should_make_get_call_when_has_url_parameter() throws Exception {
         String url = "http://localhost:9000";
-        Parameters parameters = Parameters.one("http_request_maker", ImmutableMap.of("url", url));
+        Parameters parameters = Parameters.one("http_request_maker", ImmutableMap.of("url", url, "method", "GET"));
+
         httpRequestMaker.transform(null, ResponseDefinition.ok(), null, parameters);
 
         verify(httpClient, times(1)).execute(url, HttpMethod.GET);
