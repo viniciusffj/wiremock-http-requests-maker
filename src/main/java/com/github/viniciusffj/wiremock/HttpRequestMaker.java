@@ -6,7 +6,6 @@ import com.github.tomakehurst.wiremock.extension.Parameters;
 import com.github.tomakehurst.wiremock.extension.ResponseDefinitionTransformer;
 import com.github.tomakehurst.wiremock.http.Request;
 import com.github.tomakehurst.wiremock.http.ResponseDefinition;
-import com.mashape.unirest.http.exceptions.UnirestException;
 
 public class HttpRequestMaker extends ResponseDefinitionTransformer {
 
@@ -31,11 +30,7 @@ public class HttpRequestMaker extends ResponseDefinitionTransformer {
         TransformerParameters transformerParameters = new TransformerParameters(parameters);
 
         if (transformerParameters.hasRequestMakerParameter()) {
-            try {
-                httpClient.get(transformerParameters.getUrl());
-            } catch (UnirestException e) {
-                e.printStackTrace();
-            }
+            httpClient.get(transformerParameters.getUrl());
         }
 
         return ResponseDefinitionBuilder.like(responseDefinition).build();

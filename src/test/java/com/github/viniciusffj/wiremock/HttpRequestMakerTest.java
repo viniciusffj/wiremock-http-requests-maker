@@ -26,7 +26,7 @@ public class HttpRequestMakerTest {
     public void setUp() throws Exception {
         httpRequestMaker = new HttpRequestMaker(httpClient);
 
-        doNothing().when(httpClient).get(anyString());
+        when(httpClient.get(anyString())).thenReturn(HttpClientResponse.success());
     }
 
     @Test

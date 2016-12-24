@@ -4,7 +4,12 @@ import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
 public class HttpClient {
-    public void get(String url) throws UnirestException {
-        Unirest.get(url).asString();
+    public HttpClientResponse get(String url) {
+        try {
+            Unirest.get(url).asString();
+        } catch (UnirestException e) {
+            return HttpClientResponse.error();
+        }
+        return HttpClientResponse.success();
     }
 }
