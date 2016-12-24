@@ -2,10 +2,10 @@ package com.github.viniciusffj.wiremock;
 
 import com.github.tomakehurst.wiremock.extension.Parameters;
 import com.github.tomakehurst.wiremock.http.ResponseDefinition;
+import com.github.viniciusffj.wiremock.helpers.ParametersBuilder;
 import com.github.viniciusffj.wiremock.http.HttpClient;
 import com.github.viniciusffj.wiremock.http.HttpClientResponse;
 import com.github.viniciusffj.wiremock.http.HttpMethod;
-import com.google.common.collect.ImmutableMap;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -44,7 +44,7 @@ public class HttpRequestMakerTest {
 
     @Test
     public void should_not_make_get_call_when_no_parameter() throws Exception {
-        httpRequestMaker.transform(null, ResponseDefinition.ok(), null, Parameters.empty());
+        httpRequestMaker.transform(null, ResponseDefinition.ok(), null, new ParametersBuilder().empty());
 
         verify(httpClient, never()).execute(anyString(), any(HttpMethod.class));
     }
@@ -52,7 +52,11 @@ public class HttpRequestMakerTest {
     @Test
     public void should_make_get_call_when_has_url_parameter() throws Exception {
         String url = "http://localhost:9000";
-        Parameters parameters = Parameters.one("http_request_maker", ImmutableMap.of("url", url, "method", "GET"));
+
+        Parameters parameters = new ParametersBuilder()
+                .url(url)
+                .method(HttpMethod.GET)
+                .build();
 
         httpRequestMaker.transform(null, ResponseDefinition.ok(), null, parameters);
 

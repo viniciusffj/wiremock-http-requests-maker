@@ -1,12 +1,12 @@
 package com.github.viniciusffj.wiremock;
 
 import com.github.tomakehurst.wiremock.extension.Parameters;
+import com.github.viniciusffj.wiremock.helpers.ParametersBuilder;
 import com.github.viniciusffj.wiremock.http.HttpMethod;
-import com.google.common.collect.ImmutableMap;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 
 public class TransformerParametersTest {
 
@@ -26,7 +26,7 @@ public class TransformerParametersTest {
 
     @Test
     public void should_has_parameters_when_http_request_maker_is_present() throws Exception {
-        TransformerParameters transformerParameters = new TransformerParameters(Parameters.one("http_request_maker", "value"));
+        TransformerParameters transformerParameters = new TransformerParameters(new ParametersBuilder().build());
 
         assertThat(transformerParameters.hasRequestMakerParameter(), is(true));
     }
@@ -34,16 +34,14 @@ public class TransformerParametersTest {
     @Test
     public void should_get_url_value() throws Exception {
         String url = "http://some.url.com";
-        Parameters parameters = Parameters.one("http_request_maker", ImmutableMap.of("url", url));
-        TransformerParameters transformerParameters = new TransformerParameters(parameters);
+        TransformerParameters transformerParameters = new TransformerParameters(new ParametersBuilder().url(url).build());
 
         assertThat(transformerParameters.getUrl(), is(url));
     }
 
     @Test
     public void should_get_method_value() throws Exception {
-        Parameters parameters = Parameters.one("http_request_maker", ImmutableMap.of("method", "PoSt"));
-        TransformerParameters transformerParameters = new TransformerParameters(parameters);
+        TransformerParameters transformerParameters = new TransformerParameters(new ParametersBuilder().method(HttpMethod.POST).build());
 
         assertThat(transformerParameters.getMethod(), is(HttpMethod.POST));
     }

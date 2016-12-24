@@ -1,12 +1,13 @@
 package com.github.viniciusffj.wiremock;
 
 import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
+import com.github.viniciusffj.wiremock.helpers.ParametersBuilder;
+import com.github.viniciusffj.wiremock.http.HttpMethod;
 import io.restassured.RestAssured;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
@@ -51,18 +52,18 @@ public class HttpRequestMakerIntegrationTest {
     }
 
     private Map<String, String> getRequestParameters() {
-        return new HashMap<String, String>() {{
-            put("url", "http://localhost:8011/resource");
-            put("method", "GET");
-        }};
+        return new ParametersBuilder()
+                .url("http://localhost:8011/resource")
+                .method(HttpMethod.GET)
+                .buildHttpRequestMakerParameters();
     }
 
 
     private Map<String, String> postRequestParameters() {
-        return new HashMap<String, String>() {{
-            put("url", "http://localhost:8011/resource");
-            put("method", "POST");
-        }};
+        return new ParametersBuilder()
+                .url("http://localhost:8011/resource")
+                .method(HttpMethod.POST)
+                .buildHttpRequestMakerParameters();
     }
 
     @Test
