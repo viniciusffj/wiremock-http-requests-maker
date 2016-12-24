@@ -1,6 +1,7 @@
 package com.github.viniciusffj.wiremock;
 
 import com.github.tomakehurst.wiremock.extension.Parameters;
+import com.github.viniciusffj.wiremock.http.HttpMethod;
 import com.google.common.collect.ImmutableMap;
 import org.junit.Test;
 
@@ -37,5 +38,13 @@ public class TransformerParametersTest {
         TransformerParameters transformerParameters = new TransformerParameters(parameters);
 
         assertThat(transformerParameters.getUrl(), is(url));
+    }
+
+    @Test
+    public void should_get_method_value() throws Exception {
+        Parameters parameters = Parameters.one("http_request_maker", ImmutableMap.of("method", "PoSt"));
+        TransformerParameters transformerParameters = new TransformerParameters(parameters);
+
+        assertThat(transformerParameters.getMethod(), is(HttpMethod.POST));
     }
 }
