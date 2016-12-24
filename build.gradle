@@ -13,6 +13,7 @@ dependencies {
     compile group: 'com.github.tomakehurst', name: 'wiremock', version: '2.4.1'
     compile 'com.mashape.unirest:unirest-java:1.4.9'
     compile 'io.rest-assured:rest-assured:3.0.1'
+    compile 'org.apache.commons:commons-lang3:3.5'
 
 
     testCompile 'junit:junit:4.12'
