@@ -1,18 +1,26 @@
 package com.github.viniciusffj.wiremock.http;
 
 import com.mashape.unirest.http.Unirest;
-import com.mashape.unirest.http.exceptions.UnirestException;
 import com.mashape.unirest.request.HttpRequest;
+import org.apache.commons.lang3.StringUtils;
 
 public class HttpClient {
 
     public HttpClientResponse execute(String url, HttpMethod httpMethod) {
+        if (StringUtils.isEmpty(url)) {
+            throw new IllegalArgumentException("Url can't be empty");
+        }
+
+        if (httpMethod == null) {
+            throw new IllegalArgumentException("HTTP method can't be null");
+        }
+
         try {
             HttpRequest request;
             request = createHttpRequest(url, httpMethod);
 
             request.asString();
-        } catch (UnirestException e) {
+        } catch (Exception e) {
             return HttpClientResponse.error();
         }
 
