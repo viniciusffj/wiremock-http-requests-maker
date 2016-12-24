@@ -27,7 +27,7 @@ public class HttpClientGETIntegrationTest {
                 .willReturn(aResponse()
                         .withStatus(200)));
 
-        HttpClientResponse response = httpClient.get("http://localhost:8001/my/resource");
+        HttpClientResponse response = httpClient.execute("http://localhost:8001/my/resource", HttpMethod.GET);
 
         assertThat(response.hasError(), is(false));
         verify(getRequestedFor(urlMatching("/my/resource")));
@@ -35,7 +35,7 @@ public class HttpClientGETIntegrationTest {
 
     @Test
     public void should_have_error_response_when_making_a_get_to_unknown_host() throws Exception {
-        HttpClientResponse httpClientResponse = this.httpClient.get("http://this.host.doesnt.exist.com/service");
+        HttpClientResponse httpClientResponse = this.httpClient.execute("http://this.host.doesnt.exist.com/service", HttpMethod.GET);
 
         assertThat(httpClientResponse.hasError(), is(true));
     }

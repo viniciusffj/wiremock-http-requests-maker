@@ -2,24 +2,35 @@ package com.github.viniciusffj.wiremock.http;
 
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import com.mashape.unirest.request.HttpRequest;
 
 public class HttpClient {
-    public HttpClientResponse get(String url) {
+
+    public HttpClientResponse execute(String url, HttpMethod httpMethod) {
         try {
-            Unirest.get(url).asString();
+            HttpRequest request;
+            request = createHttpRequest(url, httpMethod);
+
+            request.asString();
         } catch (UnirestException e) {
             return HttpClientResponse.error();
         }
+
         return HttpClientResponse.success();
     }
 
-    public HttpClientResponse post(String url) {
-        try {
-            Unirest.post(url).asString();
-        } catch (UnirestException e) {
-            return HttpClientResponse.error();
+    private HttpRequest createHttpRequest(String url, HttpMethod httpMethod) {
+        HttpRequest request;
+
+        switch (httpMethod) {
+            case POST:
+                request = Unirest.post(url);
+                break;
+            default:
+                request = Unirest.get(url);
+                break;
         }
 
-        return HttpClientResponse.success();
+        return request;
     }
 }

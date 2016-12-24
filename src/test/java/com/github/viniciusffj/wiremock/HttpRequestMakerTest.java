@@ -4,6 +4,7 @@ import com.github.tomakehurst.wiremock.extension.Parameters;
 import com.github.tomakehurst.wiremock.http.ResponseDefinition;
 import com.github.viniciusffj.wiremock.http.HttpClient;
 import com.github.viniciusffj.wiremock.http.HttpClientResponse;
+import com.github.viniciusffj.wiremock.http.HttpMethod;
 import com.google.common.collect.ImmutableMap;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,7 +29,7 @@ public class HttpRequestMakerTest {
     public void setUp() throws Exception {
         httpRequestMaker = new HttpRequestMaker(httpClient);
 
-        when(httpClient.get(anyString())).thenReturn(HttpClientResponse.success());
+        when(httpClient.execute(anyString(), eq(HttpMethod.GET))).thenReturn(HttpClientResponse.success());
     }
 
     @Test
@@ -45,7 +46,7 @@ public class HttpRequestMakerTest {
     public void should_not_make_get_call_when_no_parameter() throws Exception {
         httpRequestMaker.transform(null, ResponseDefinition.ok(), null, Parameters.empty());
 
-        verify(httpClient, never()).get(anyString());
+        verify(httpClient, never()).execute(anyString(), eq(HttpMethod.GET));
     }
 
     @Test
@@ -54,6 +55,6 @@ public class HttpRequestMakerTest {
         Parameters parameters = Parameters.one("http_request_maker", ImmutableMap.of("url", url));
         httpRequestMaker.transform(null, ResponseDefinition.ok(), null, parameters);
 
-        verify(httpClient, times(1)).get(url);
+        verify(httpClient, times(1)).execute(url, HttpMethod.GET);
     }
 }

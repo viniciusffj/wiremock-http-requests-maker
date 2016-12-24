@@ -27,7 +27,7 @@ public class HttpClientPOSTIntegrationTest {
                 .willReturn(aResponse()
                         .withStatus(200)));
 
-        HttpClientResponse response = httpClient.post("http://localhost:8002/my/resource");
+        HttpClientResponse response = httpClient.execute("http://localhost:8002/my/resource", HttpMethod.POST);
 
         assertThat(response.hasError(), is(false));
         verify(postRequestedFor(urlMatching("/my/resource")));
@@ -35,7 +35,7 @@ public class HttpClientPOSTIntegrationTest {
 
     @Test
     public void should_have_error_response_when_making_a_post_to_unknown_host() throws Exception {
-        HttpClientResponse httpClientResponse = this.httpClient.post("http://this.host.doesnt.exist.com/service");
+        HttpClientResponse httpClientResponse = this.httpClient.execute("http://this.host.doesnt.exist.com/service", HttpMethod.POST);
 
         assertThat(httpClientResponse.hasError(), is(true));
     }
