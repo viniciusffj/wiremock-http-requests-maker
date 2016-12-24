@@ -9,10 +9,10 @@ import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-public class HttpClientIntegrationTest {
+public class HttpClientPOSTIntegrationTest {
 
     @ClassRule
-    public static WireMockClassRule wireMockRule = new WireMockClassRule(8001);
+    public static WireMockClassRule wireMockRule = new WireMockClassRule(8002);
 
     private HttpClient httpClient;
 
@@ -22,31 +22,12 @@ public class HttpClientIntegrationTest {
     }
 
     @Test
-    public void should_make_successful_get_request() throws Exception {
-        stubFor(get(urlEqualTo("/my/resource"))
-                .willReturn(aResponse()
-                        .withStatus(200)));
-
-        HttpClientResponse response = httpClient.get("http://localhost:8001/my/resource");
-
-        assertThat(response.hasError(), is(false));
-        verify(getRequestedFor(urlMatching("/my/resource")));
-    }
-
-    @Test
-    public void should_have_error_response_when_making_a_get_to_unknown_host() throws Exception {
-        HttpClientResponse httpClientResponse = this.httpClient.get("http://this.host.doesnt.exist.com/service");
-
-        assertThat(httpClientResponse.hasError(), is(true));
-    }
-
-    @Test
     public void should_make_succesful_post_request() throws Exception {
         stubFor(post(urlEqualTo("/my/resource"))
                 .willReturn(aResponse()
                         .withStatus(200)));
 
-        HttpClientResponse response = httpClient.post("http://localhost:8001/my/resource");
+        HttpClientResponse response = httpClient.post("http://localhost:8002/my/resource");
 
         assertThat(response.hasError(), is(false));
         verify(postRequestedFor(urlMatching("/my/resource")));
