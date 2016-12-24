@@ -34,8 +34,27 @@ public class HttpClientIntegrationTest {
     }
 
     @Test
-    public void should_have_error_response_when_host_is_wrong() throws Exception {
+    public void should_have_error_response_when_making_a_get_to_unknown_host() throws Exception {
         HttpClientResponse httpClientResponse = this.httpClient.get("http://this.host.doesnt.exist.com/service");
+
+        assertThat(httpClientResponse.hasError(), is(true));
+    }
+
+    @Test
+    public void should_make_succesful_post_request() throws Exception {
+        stubFor(post(urlEqualTo("/my/resource"))
+                .willReturn(aResponse()
+                        .withStatus(200)));
+
+        HttpClientResponse response = httpClient.post("http://localhost:8001/my/resource");
+
+        assertThat(response.hasError(), is(false));
+        verify(postRequestedFor(urlMatching("/my/resource")));
+    }
+
+    @Test
+    public void should_have_error_response_when_making_a_post_to_unknown_host() throws Exception {
+        HttpClientResponse httpClientResponse = this.httpClient.post("http://this.host.doesnt.exist.com/service");
 
         assertThat(httpClientResponse.hasError(), is(true));
     }

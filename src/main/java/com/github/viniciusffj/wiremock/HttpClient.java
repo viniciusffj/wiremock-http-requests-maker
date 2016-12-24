@@ -12,4 +12,14 @@ public class HttpClient {
         }
         return HttpClientResponse.success();
     }
+
+    public HttpClientResponse post(String url) {
+        try {
+            Unirest.post(url).asString();
+        } catch (UnirestException e) {
+            return HttpClientResponse.error();
+        }
+
+        return HttpClientResponse.success();
+    }
 }
