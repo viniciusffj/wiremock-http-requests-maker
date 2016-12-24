@@ -8,8 +8,6 @@ import com.github.tomakehurst.wiremock.http.Request;
 import com.github.tomakehurst.wiremock.http.ResponseDefinition;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
-import java.util.Map;
-
 public class HttpRequestMaker extends ResponseDefinitionTransformer {
 
     @Override
@@ -19,12 +17,16 @@ public class HttpRequestMaker extends ResponseDefinitionTransformer {
 
     @Override
     public ResponseDefinition transform(Request request, ResponseDefinition responseDefinition, FileSource files, Parameters parameters) {
-        Map http_request_maker = (Map) parameters.get("http_request_maker");
-        try {
-            new HttpClient().get((String) http_request_maker.get("url"));
-        } catch (UnirestException e) {
-            e.printStackTrace();
+        TransformerParameters transformerParameters = new TransformerParameters(parameters);
+
+        if (transformerParameters.hasRequestMakerParameter()) {
+            try {
+                new HttpClient().get(transformerParameters.getUrl());
+            } catch (UnirestException e) {
+                e.printStackTrace();
+            }
         }
+
         return ResponseDefinitionBuilder.like(responseDefinition).build();
     }
 
