@@ -21,12 +21,8 @@ public class HttpRequestMakerIntegrationTest {
                     .port(8002)
                     .extensions("com.github.viniciusffj.wiremock.HttpRequestMaker"));
 
-    private HttpRequestMaker httpRequestMaker;
-
     @Before
     public void setUp() throws Exception {
-        this.httpRequestMaker = new HttpRequestMaker();
-
         serviceToBeInvoked.
                 stubFor(get(urlEqualTo("/resource"))
                         .willReturn(aResponse()

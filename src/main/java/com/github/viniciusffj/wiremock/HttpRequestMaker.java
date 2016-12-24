@@ -10,6 +10,17 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 
 public class HttpRequestMaker extends ResponseDefinitionTransformer {
 
+    private HttpClient httpClient;
+
+    /* Used by wiremock */
+    public HttpRequestMaker() {
+        this(new HttpClient());
+    }
+
+    protected HttpRequestMaker(HttpClient httpClient) {
+        this.httpClient = httpClient;
+    }
+
     @Override
     public boolean applyGlobally() {
         return false;
@@ -21,7 +32,7 @@ public class HttpRequestMaker extends ResponseDefinitionTransformer {
 
         if (transformerParameters.hasRequestMakerParameter()) {
             try {
-                new HttpClient().get(transformerParameters.getUrl());
+                httpClient.get(transformerParameters.getUrl());
             } catch (UnirestException e) {
                 e.printStackTrace();
             }
