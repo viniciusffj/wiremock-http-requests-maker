@@ -8,8 +8,9 @@ import java.util.Map;
 
 public class ParametersBuilder {
 
-    private String url = "http://localhost:9000";;
+    private String url = "http://localhost:9000";
     private HttpMethod method = HttpMethod.GET;
+    private Map<String, String> headers = new HashMap<>();
 
     public ParametersBuilder url(String url) {
         this.url = url;
@@ -21,10 +22,18 @@ public class ParametersBuilder {
         return this;
     }
 
+    public ParametersBuilder header(String key, String value) {
+        this.headers.put(key, value);
+        return this;
+    }
+
     public Parameters build() {
-        Map<String, String> map = new HashMap<String, String>() {{
+        Map<String, Object> map = new HashMap<String, Object>() {{
             put("url", url);
             put("method", method.toString());
+            if (!headers.isEmpty()) {
+                put("headers", headers);
+            }
         }};
 
         return Parameters.one("http_request_maker", map);
