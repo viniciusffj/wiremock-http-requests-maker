@@ -26,4 +26,9 @@ public class HttpClientTest {
     public void should_throw_invalid_argument_when_method_is_null() throws Exception {
         httpClient.execute("http://localhost", null);
     }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void should_throw_invalid_argument_when_headers_is_null() throws Exception {
+        httpClient.execute("http://localhost", HttpMethod.OPTIONS, null);
+    }
 }

@@ -8,6 +8,8 @@ import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
 
+import java.util.HashMap;
+
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -27,13 +29,19 @@ public class HttpClientGETIntegrationTest {
     @Test
     public void should_make_successful_request() throws Exception {
         stubFor(get(urlEqualTo("/my/resource"))
+                .withHeader("Content-Type", equalTo("application/json"))
                 .willReturn(aResponse()
                         .withStatus(200)));
 
-        HttpClientResponse response = httpClient.execute("http://localhost:8002/my/resource", HttpMethod.GET);
+        HashMap<String, String> headers = new HashMap<String, String>() {{
+            put("Content-Type", "application/json");
+        }};
+
+        HttpClientResponse response = httpClient.execute("http://localhost:8002/my/resource", HttpMethod.GET, headers);
 
         assertThat(response.hasError(), is(false));
-        verify(getRequestedFor(urlMatching("/my/resource")));
+        verify(getRequestedFor(urlMatching("/my/resource"))
+                .withHeader("Content-Type", equalTo("application/json")));
     }
 
     @Test

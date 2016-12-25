@@ -4,9 +4,16 @@ import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.request.HttpRequest;
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class HttpClient {
 
     public HttpClientResponse execute(String url, HttpMethod httpMethod) {
+        return execute(url, httpMethod, new HashMap<String, String>());
+    }
+
+    public HttpClientResponse execute(String url, HttpMethod httpMethod, Map<String, String> headers) {
         if (StringUtils.isEmpty(url)) {
             throw new IllegalArgumentException("Url can't be empty");
         }
@@ -15,11 +22,14 @@ public class HttpClient {
             throw new IllegalArgumentException("HTTP method can't be null");
         }
 
-        try {
-            HttpRequest request;
-            request = createHttpRequest(url, httpMethod);
+        if (headers == null) {
+            throw new IllegalArgumentException("Headers can't be null, one can send a new HashMap instead");
+        }
 
-            request.asString();
+        try {
+            createHttpRequest(url, httpMethod)
+                    .headers(headers)
+                    .asString();
         } catch (Exception e) {
             return HttpClientResponse.error();
         }
