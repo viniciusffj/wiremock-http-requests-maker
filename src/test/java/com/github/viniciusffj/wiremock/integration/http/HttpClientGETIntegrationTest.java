@@ -1,6 +1,9 @@
-package com.github.viniciusffj.wiremock.http;
+package com.github.viniciusffj.wiremock.integration.http;
 
 import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
+import com.github.viniciusffj.wiremock.http.HttpClient;
+import com.github.viniciusffj.wiremock.http.HttpClientResponse;
+import com.github.viniciusffj.wiremock.http.HttpMethod;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;

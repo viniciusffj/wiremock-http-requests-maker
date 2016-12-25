@@ -1,4 +1,4 @@
-package com.github.viniciusffj.wiremock;
+package com.github.viniciusffj.wiremock.integration;
 
 import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
 import com.github.viniciusffj.wiremock.helpers.ParametersBuilder;

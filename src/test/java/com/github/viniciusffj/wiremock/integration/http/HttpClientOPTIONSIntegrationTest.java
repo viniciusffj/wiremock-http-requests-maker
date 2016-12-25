@@ -1,6 +1,9 @@
-package com.github.viniciusffj.wiremock.http;
+package com.github.viniciusffj.wiremock.integration.http;
 
 import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
+import com.github.viniciusffj.wiremock.http.HttpClient;
+import com.github.viniciusffj.wiremock.http.HttpClientResponse;
+import com.github.viniciusffj.wiremock.http.HttpMethod;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
@@ -9,10 +12,10 @@ import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-public class HttpClientDELETEIntegrationTest {
+public class HttpClientOPTIONSIntegrationTest {
 
     @ClassRule
-    public static WireMockClassRule wireMockRule = new WireMockClassRule(8001);
+    public static WireMockClassRule wireMockRule = new WireMockClassRule(8004);
 
     private HttpClient httpClient;
 
@@ -23,14 +26,14 @@ public class HttpClientDELETEIntegrationTest {
 
     @Test
     public void should_make_successful_request() throws Exception {
-        stubFor(delete(urlEqualTo("/my/resource"))
+        stubFor(options(urlEqualTo("/my/resource"))
                 .willReturn(aResponse()
                         .withStatus(200)));
 
-        HttpClientResponse response = httpClient.execute("http://localhost:8001/my/resource", HttpMethod.DELETE);
+        HttpClientResponse response = httpClient.execute("http://localhost:8004/my/resource", HttpMethod.OPTIONS);
 
         assertThat(response.hasError(), is(false));
-        verify(deleteRequestedFor(urlMatching("/my/resource")));
+        verify(optionsRequestedFor(urlMatching("/my/resource")));
     }
 
 }
