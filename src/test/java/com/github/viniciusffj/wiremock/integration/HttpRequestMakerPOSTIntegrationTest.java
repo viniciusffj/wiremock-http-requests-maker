@@ -31,19 +31,17 @@ public class HttpRequestMakerPOSTIntegrationTest {
                         .willReturn(aResponse()
                                 .withStatus(200)));
 
+        Map<String, Object> requestParameters = new ParametersBuilder()
+                .url("http://localhost:8013/resource")
+                .method(HttpMethod.POST)
+                .buildHttpRequestMakerParameters();
+
         serviceWithRequestMaker
                 .stubFor(post(urlEqualTo("/http-request-maker-post"))
                         .willReturn(aResponse()
                                 .withStatus(200)
-                                .withTransformerParameter("http_request_maker", postRequestParameters())
+                                .withTransformerParameter("http_request_maker", requestParameters)
                                 .withTransformers("http-request-maker")));
-    }
-
-    private Map<String, String> postRequestParameters() {
-        return new ParametersBuilder()
-                .url("http://localhost:8013/resource")
-                .method(HttpMethod.POST)
-                .buildHttpRequestMakerParameters();
     }
 
     @Test

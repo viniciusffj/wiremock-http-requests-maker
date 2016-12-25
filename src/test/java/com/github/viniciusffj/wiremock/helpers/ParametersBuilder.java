@@ -28,21 +28,17 @@ public class ParametersBuilder {
     }
 
     public Parameters build() {
-        Map<String, Object> map = new HashMap<String, Object>() {{
+        Map<String, Object> map = buildHttpRequestMakerParameters();
+        return Parameters.one("http_request_maker", map);
+    }
+
+    public Map<String, Object> buildHttpRequestMakerParameters() {
+        return new HashMap<String, Object>() {{
             put("url", url);
             put("method", method.toString());
             if (!headers.isEmpty()) {
                 put("headers", headers);
             }
-        }};
-
-        return Parameters.one("http_request_maker", map);
-    }
-
-    public Map<String, String> buildHttpRequestMakerParameters() {
-        return new HashMap<String, String>() {{
-            put("url", url);
-            put("method", method.toString());
         }};
     }
 

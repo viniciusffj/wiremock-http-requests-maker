@@ -28,25 +28,24 @@ public class HttpRequestMakerGETIntegrationTest {
     public void setUp() throws Exception {
         serviceToBeInvoked.
                 stubFor(get(urlEqualTo("/resource"))
+                        .withHeader("Accept", equalTo("application/json"))
                         .willReturn(aResponse()
                                 .withStatus(200)));
+
+        Map<String, Object> requestParameters = new ParametersBuilder()
+                .url("http://localhost:8011/resource")
+                .header("Accept", "application/json")
+                .method(HttpMethod.GET)
+                .buildHttpRequestMakerParameters();
 
         serviceWithRequestMaker
                 .stubFor(get(urlEqualTo("/http-request-maker-get"))
                         .willReturn(aResponse()
                                 .withStatus(200)
-                                .withTransformerParameter("http_request_maker", getRequestParameters())
+                                .withTransformerParameter("http_request_maker", requestParameters)
                                 .withTransformers("http-request-maker")));
 
     }
-
-    private Map<String, String> getRequestParameters() {
-        return new ParametersBuilder()
-                .url("http://localhost:8011/resource")
-                .method(HttpMethod.GET)
-                .buildHttpRequestMakerParameters();
-    }
-
 
     @Test
     public void should_make_get_request_other_service() throws Exception {
@@ -56,7 +55,8 @@ public class HttpRequestMakerGETIntegrationTest {
                 .assertThat()
                 .statusCode(200);
 
-        serviceToBeInvoked.verify(getRequestedFor(urlMatching("/resource")));
+        serviceToBeInvoked.verify(getRequestedFor(urlMatching("/resource"))
+            .withHeader("Accept", equalTo("application/json")));
     }
 
 }

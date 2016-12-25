@@ -12,6 +12,9 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -29,7 +32,7 @@ public class HttpRequestMakerTest {
     public void setUp() throws Exception {
         httpRequestMaker = new HttpRequestMaker(httpClient);
 
-        when(httpClient.execute(anyString(), eq(HttpMethod.GET))).thenReturn(HttpClientResponse.success());
+        when(httpClient.execute(anyString(), any(HttpMethod.class), any(Map.class))).thenReturn(HttpClientResponse.success());
     }
 
     @Test
@@ -55,11 +58,16 @@ public class HttpRequestMakerTest {
 
         Parameters parameters = new ParametersBuilder()
                 .url(url)
-                .method(HttpMethod.GET)
+                .method(HttpMethod.OPTIONS)
+                .header("Authentication", "Basic user:password")
                 .build();
 
         httpRequestMaker.transform(null, ResponseDefinition.ok(), null, parameters);
 
-        verify(httpClient, times(1)).execute(url, HttpMethod.GET);
+        HashMap<String, String> expectedHeaders = new HashMap<String, String>() {{
+            put("Authentication", "Basic user:password");
+        }};
+
+        verify(httpClient, times(1)).execute(url, HttpMethod.OPTIONS, expectedHeaders);
     }
 }
