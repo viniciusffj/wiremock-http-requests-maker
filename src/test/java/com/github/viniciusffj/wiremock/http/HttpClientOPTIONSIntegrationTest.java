@@ -9,10 +9,10 @@ import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-public class HttpClientPOSTIntegrationTest {
+public class HttpClientOPTIONSIntegrationTest {
 
     @ClassRule
-    public static WireMockClassRule wireMockRule = new WireMockClassRule(8006);
+    public static WireMockClassRule wireMockRule = new WireMockClassRule(8004);
 
     private HttpClient httpClient;
 
@@ -23,14 +23,14 @@ public class HttpClientPOSTIntegrationTest {
 
     @Test
     public void should_make_successful_request() throws Exception {
-        stubFor(post(urlEqualTo("/my/resource"))
+        stubFor(options(urlEqualTo("/my/resource"))
                 .willReturn(aResponse()
                         .withStatus(200)));
 
-        HttpClientResponse response = httpClient.execute("http://localhost:8006/my/resource", HttpMethod.POST);
+        HttpClientResponse response = httpClient.execute("http://localhost:8004/my/resource", HttpMethod.OPTIONS);
 
         assertThat(response.hasError(), is(false));
-        verify(postRequestedFor(urlMatching("/my/resource")));
+        verify(optionsRequestedFor(urlMatching("/my/resource")));
     }
 
 }

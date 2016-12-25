@@ -12,7 +12,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class HttpClientGETIntegrationTest {
 
     @ClassRule
-    public static WireMockClassRule wireMockRule = new WireMockClassRule(8001);
+    public static WireMockClassRule wireMockRule = new WireMockClassRule(8002);
 
     private HttpClient httpClient;
 
@@ -22,12 +22,12 @@ public class HttpClientGETIntegrationTest {
     }
 
     @Test
-    public void should_make_successful_get_request() throws Exception {
+    public void should_make_successful_request() throws Exception {
         stubFor(get(urlEqualTo("/my/resource"))
                 .willReturn(aResponse()
                         .withStatus(200)));
 
-        HttpClientResponse response = httpClient.execute("http://localhost:8001/my/resource", HttpMethod.GET);
+        HttpClientResponse response = httpClient.execute("http://localhost:8002/my/resource", HttpMethod.GET);
 
         assertThat(response.hasError(), is(false));
         verify(getRequestedFor(urlMatching("/my/resource")));

@@ -28,14 +28,29 @@ public class HttpClient {
     }
 
     private HttpRequest createHttpRequest(String url, HttpMethod httpMethod) {
-        HttpRequest request;
+        HttpRequest request = null;
 
         switch (httpMethod) {
+            case GET:
+                request = Unirest.get(url);
+                break;
             case POST:
                 request = Unirest.post(url);
                 break;
-            default:
-                request = Unirest.get(url);
+            case PUT:
+                request = Unirest.put(url);
+                break;
+            case PATCH:
+                request = Unirest.patch(url);
+                break;
+            case DELETE:
+                request = Unirest.delete(url);
+                break;
+            case HEAD:
+                request = Unirest.head(url);
+                break;
+            case OPTIONS:
+                request = Unirest.options(url);
                 break;
         }
 
