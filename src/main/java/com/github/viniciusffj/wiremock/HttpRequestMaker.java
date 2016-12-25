@@ -7,6 +7,7 @@ import com.github.tomakehurst.wiremock.extension.ResponseDefinitionTransformer;
 import com.github.tomakehurst.wiremock.http.Request;
 import com.github.tomakehurst.wiremock.http.ResponseDefinition;
 import com.github.viniciusffj.wiremock.http.HttpClient;
+import com.github.viniciusffj.wiremock.http.HttpRequestParameters;
 
 public class HttpRequestMaker extends ResponseDefinitionTransformer {
 
@@ -28,10 +29,10 @@ public class HttpRequestMaker extends ResponseDefinitionTransformer {
 
     @Override
     public ResponseDefinition transform(Request request, ResponseDefinition responseDefinition, FileSource files, Parameters parameters) {
-        TransformerParameters transformerParameters = new TransformerParameters(parameters);
+        HttpRequestParameters httpRequestParameters = new HttpRequestParameters(parameters);
 
-        if (transformerParameters.hasRequestMakerParameter()) {
-            httpClient.execute(transformerParameters.getUrl(), transformerParameters.getMethod(), transformerParameters.getHeaders());
+        if (httpRequestParameters.hasRequestMakerParameter()) {
+            httpClient.execute(httpRequestParameters.getUrl(), httpRequestParameters.getMethod(), httpRequestParameters.getHeaders());
         }
 
         return ResponseDefinitionBuilder.like(responseDefinition).build();

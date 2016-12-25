@@ -1,12 +1,11 @@
-package com.github.viniciusffj.wiremock;
+package com.github.viniciusffj.wiremock.http;
 
 import com.github.tomakehurst.wiremock.extension.Parameters;
-import com.github.viniciusffj.wiremock.http.HttpMethod;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class TransformerParameters {
+public class HttpRequestParameters {
     private static final String ROOT_PARAMETER = "http_request_maker";
     private static final String URL_PARAMETER = "url";
     private static final String METHOD_PARAMETER = "method";
@@ -14,7 +13,7 @@ public class TransformerParameters {
 
     private Parameters parameters;
 
-    public TransformerParameters(Parameters parameters) {
+    public HttpRequestParameters(Parameters parameters) {
         this.parameters = parameters;
     }
 
