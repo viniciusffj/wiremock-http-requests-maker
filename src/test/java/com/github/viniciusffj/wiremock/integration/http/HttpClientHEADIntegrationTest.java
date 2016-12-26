@@ -1,9 +1,11 @@
 package com.github.viniciusffj.wiremock.integration.http;
 
 import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
+import com.github.viniciusffj.wiremock.helpers.HttpRequestParametersBuilder;
 import com.github.viniciusffj.wiremock.http.HttpClient;
 import com.github.viniciusffj.wiremock.http.HttpClientResponse;
 import com.github.viniciusffj.wiremock.http.HttpMethod;
+import com.github.viniciusffj.wiremock.http.HttpRequestParameters;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
@@ -30,7 +32,12 @@ public class HttpClientHEADIntegrationTest {
                 .willReturn(aResponse()
                         .withStatus(200)));
 
-        HttpClientResponse response = httpClient.execute("http://localhost:8003/my/resource", HttpMethod.HEAD);
+        HttpRequestParameters httpRequestParameters = new HttpRequestParametersBuilder()
+                .url("http://localhost:8003/my/resource")
+                .method(HttpMethod.HEAD)
+                .build();
+
+        HttpClientResponse response = httpClient.execute(httpRequestParameters);
 
         assertThat(response.hasError(), is(false));
         verify(headRequestedFor(urlMatching("/my/resource")));

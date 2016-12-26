@@ -1,5 +1,6 @@
 package com.github.viniciusffj.wiremock.http;
 
+import com.github.viniciusffj.wiremock.helpers.HttpRequestParametersBuilder;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -14,21 +15,27 @@ public class HttpClientTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void should_throw_invalid_argument_when_url_is_null() throws Exception {
-        httpClient.execute(null, HttpMethod.GET);
+        HttpRequestParameters httpRequestParameters = new HttpRequestParametersBuilder()
+                .url(null)
+                .method(HttpMethod.GET)
+                .build();
+
+        httpClient.execute(httpRequestParameters);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void should_throw_invalid_argument_when_url_is_empty() throws Exception {
-        httpClient.execute("", HttpMethod.GET);
+        HttpRequestParameters httpRequestParameters = new HttpRequestParametersBuilder()
+                .url("")
+                .method(HttpMethod.GET)
+                .build();
+
+        httpClient.execute(httpRequestParameters);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void should_throw_invalid_argument_when_method_is_null() throws Exception {
-        httpClient.execute("http://localhost", null);
+    public void should_throw_invalid_argument_when_parameters_is_null() throws Exception {
+        httpClient.execute(null);
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void should_throw_invalid_argument_when_headers_is_null() throws Exception {
-        httpClient.execute("http://localhost", HttpMethod.OPTIONS, null);
-    }
 }

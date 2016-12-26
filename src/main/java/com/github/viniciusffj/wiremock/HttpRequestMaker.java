@@ -32,7 +32,7 @@ public class HttpRequestMaker extends ResponseDefinitionTransformer {
         HttpRequestParameters httpRequestParameters = new HttpRequestParameters(parameters);
 
         if (httpRequestParameters.hasRequestMakerParameter()) {
-            httpClient.execute(httpRequestParameters.getUrl(), httpRequestParameters.getMethod(), httpRequestParameters.getHeaders());
+            httpClient.execute(httpRequestParameters);
         }
 
         return ResponseDefinitionBuilder.like(responseDefinition).build();

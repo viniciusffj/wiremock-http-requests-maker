@@ -6,6 +6,7 @@ import com.github.viniciusffj.wiremock.helpers.ParametersBuilder;
 import com.github.viniciusffj.wiremock.http.HttpClient;
 import com.github.viniciusffj.wiremock.http.HttpClientResponse;
 import com.github.viniciusffj.wiremock.http.HttpMethod;
+import com.github.viniciusffj.wiremock.http.HttpRequestParameters;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,11 +14,9 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.HashMap;
-import java.util.Map;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -32,7 +31,7 @@ public class HttpRequestMakerTest {
     public void setUp() throws Exception {
         httpRequestMaker = new HttpRequestMaker(httpClient);
 
-        when(httpClient.execute(anyString(), any(HttpMethod.class), any(Map.class))).thenReturn(HttpClientResponse.success());
+        when(httpClient.execute(any(HttpRequestParameters.class))).thenReturn(HttpClientResponse.success());
     }
 
     @Test
@@ -49,7 +48,7 @@ public class HttpRequestMakerTest {
     public void should_not_make_get_call_when_no_parameter() throws Exception {
         httpRequestMaker.transform(null, ResponseDefinition.ok(), null, new ParametersBuilder().empty());
 
-        verify(httpClient, never()).execute(anyString(), any(HttpMethod.class));
+        verify(httpClient, never()).execute(any(HttpRequestParameters.class));
     }
 
     @Test
@@ -68,6 +67,6 @@ public class HttpRequestMakerTest {
             put("Authentication", "Basic user:password");
         }};
 
-        verify(httpClient, times(1)).execute(url, HttpMethod.OPTIONS, expectedHeaders);
+        verify(httpClient, times(1)).execute(any(HttpRequestParameters.class));
     }
 }

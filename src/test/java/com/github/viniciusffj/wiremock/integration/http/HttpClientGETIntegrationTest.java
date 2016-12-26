@@ -1,9 +1,11 @@
 package com.github.viniciusffj.wiremock.integration.http;
 
 import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
+import com.github.viniciusffj.wiremock.helpers.HttpRequestParametersBuilder;
 import com.github.viniciusffj.wiremock.http.HttpClient;
 import com.github.viniciusffj.wiremock.http.HttpClientResponse;
 import com.github.viniciusffj.wiremock.http.HttpMethod;
+import com.github.viniciusffj.wiremock.http.HttpRequestParameters;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
@@ -37,7 +39,13 @@ public class HttpClientGETIntegrationTest {
             put("Content-Type", "application/json");
         }};
 
-        HttpClientResponse response = httpClient.execute("http://localhost:8002/my/resource", HttpMethod.GET, headers);
+        HttpRequestParameters httpRequestParameters = new HttpRequestParametersBuilder()
+                .url("http://localhost:8002/my/resource")
+                .method(HttpMethod.GET)
+                .header("Content-Type", "application/json")
+                .build();
+
+        HttpClientResponse response = httpClient.execute(httpRequestParameters);
 
         assertThat(response.hasError(), is(false));
         verify(getRequestedFor(urlMatching("/my/resource"))
@@ -46,7 +54,12 @@ public class HttpClientGETIntegrationTest {
 
     @Test
     public void should_have_error_response_when_making_a_get_to_unknown_host() throws Exception {
-        HttpClientResponse httpClientResponse = this.httpClient.execute("http://this.host.doesnt.exist.com/service", HttpMethod.GET);
+        HttpRequestParameters httpRequestParameters =
+                new HttpRequestParametersBuilder()
+                        .url("http://not.existing.host.com/error")
+                        .method(HttpMethod.GET)
+                        .build();
+        HttpClientResponse httpClientResponse = this.httpClient.execute(httpRequestParameters);
 
         assertThat(httpClientResponse.hasError(), is(true));
     }
