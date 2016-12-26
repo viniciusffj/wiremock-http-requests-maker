@@ -15,10 +15,9 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import java.util.HashMap;
-
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.times;
 
@@ -43,11 +42,8 @@ public class HttpClientGETIntegrationTest {
         stubFor(get(urlEqualTo("/my/resource"))
                 .withHeader("Content-Type", equalTo("application/json"))
                 .willReturn(aResponse()
+                        .withBody("{}")
                         .withStatus(200)));
-
-        HashMap<String, String> headers = new HashMap<String, String>() {{
-            put("Content-Type", "application/json");
-        }};
 
         HttpRequestParameters httpRequestParameters = new HttpRequestParametersBuilder()
                 .url("http://localhost:8002/my/resource")
@@ -58,6 +54,9 @@ public class HttpClientGETIntegrationTest {
         HttpClientResponse response = httpClient.execute(httpRequestParameters);
 
         assertThat(response.hasError(), is(false));
+        assertThat(response.getStatus(), is(200));
+        assertThat(response.getBody(), is("{}"));
+
         verify(getRequestedFor(urlMatching("/my/resource"))
                 .withHeader("Content-Type", equalTo("application/json")));
     }
@@ -72,6 +71,7 @@ public class HttpClientGETIntegrationTest {
         HttpClientResponse httpClientResponse = this.httpClient.execute(httpRequestParameters);
 
         assertThat(httpClientResponse.hasError(), is(true));
+        assertThat(httpClientResponse.getError(), is(notNullValue()));
 
         Mockito.verify(notifier, times(1)).requestAttempt(httpRequestParameters);
     }

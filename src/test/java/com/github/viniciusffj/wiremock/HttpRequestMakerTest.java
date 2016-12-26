@@ -34,7 +34,7 @@ public class HttpRequestMakerTest {
     public void setUp() throws Exception {
         httpRequestMaker = new HttpRequestMaker(httpClient, notifier);
 
-        when(httpClient.execute(any(HttpRequestParameters.class))).thenReturn(HttpClientResponse.success());
+        when(httpClient.execute(any(HttpRequestParameters.class))).thenReturn(HttpClientResponse.success(200, ""));
     }
 
     @Test

@@ -1,6 +1,7 @@
 package com.github.viniciusffj.wiremock.http;
 
 import com.github.viniciusffj.wiremock.logging.HttpRequestMakerNotifier;
+import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.request.HttpRequest;
 import org.apache.commons.lang3.StringUtils;
@@ -25,14 +26,14 @@ public class HttpClient {
         this.notifier.requestAttempt(httpRequestParameters);
 
         try {
-            createHttpRequest(httpRequestParameters, httpRequestParameters.getMethod())
+            HttpResponse<String> response = createHttpRequest(httpRequestParameters, httpRequestParameters.getMethod())
                     .headers(httpRequestParameters.getHeaders())
                     .asString();
-        } catch (Exception e) {
-            return HttpClientResponse.error();
-        }
 
-        return HttpClientResponse.success();
+            return HttpClientResponse.success(response.getStatus(), response.getBody());
+        } catch (Exception e) {
+            return HttpClientResponse.error(e);
+        }
     }
 
     private HttpRequest createHttpRequest(HttpRequestParameters parameters, HttpMethod httpMethod) {
