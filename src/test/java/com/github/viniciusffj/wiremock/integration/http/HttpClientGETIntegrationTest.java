@@ -6,16 +6,23 @@ import com.github.viniciusffj.wiremock.http.HttpClient;
 import com.github.viniciusffj.wiremock.http.HttpClientResponse;
 import com.github.viniciusffj.wiremock.http.HttpMethod;
 import com.github.viniciusffj.wiremock.http.HttpRequestParameters;
+import com.github.viniciusffj.wiremock.logging.HttpRequestMakerNotifier;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.HashMap;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.mockito.Mockito.times;
 
+@RunWith(MockitoJUnitRunner.class)
 public class HttpClientGETIntegrationTest {
 
     @ClassRule
@@ -23,9 +30,12 @@ public class HttpClientGETIntegrationTest {
 
     private HttpClient httpClient;
 
+    @Mock
+    private HttpRequestMakerNotifier notifier;
+
     @Before
     public void setUp() throws Exception {
-        this.httpClient = new HttpClient();
+        this.httpClient = new HttpClient(notifier);
     }
 
     @Test
@@ -62,5 +72,7 @@ public class HttpClientGETIntegrationTest {
         HttpClientResponse httpClientResponse = this.httpClient.execute(httpRequestParameters);
 
         assertThat(httpClientResponse.hasError(), is(true));
+
+        Mockito.verify(notifier, times(1)).requestAttempt(httpRequestParameters);
     }
 }

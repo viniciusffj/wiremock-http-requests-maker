@@ -1,6 +1,7 @@
 package com.github.viniciusffj.wiremock;
 
 import com.github.tomakehurst.wiremock.client.ResponseDefinitionBuilder;
+import com.github.tomakehurst.wiremock.common.ConsoleNotifier;
 import com.github.tomakehurst.wiremock.common.FileSource;
 import com.github.tomakehurst.wiremock.extension.Parameters;
 import com.github.tomakehurst.wiremock.extension.ResponseDefinitionTransformer;
@@ -10,8 +11,6 @@ import com.github.viniciusffj.wiremock.http.HttpClient;
 import com.github.viniciusffj.wiremock.http.HttpRequestParameters;
 import com.github.viniciusffj.wiremock.logging.HttpRequestMakerNotifier;
 
-import static com.github.tomakehurst.wiremock.common.LocalNotifier.notifier;
-
 public class HttpRequestMaker extends ResponseDefinitionTransformer {
 
     private HttpClient httpClient;
@@ -19,7 +18,7 @@ public class HttpRequestMaker extends ResponseDefinitionTransformer {
 
     /* Used by wiremock */
     public HttpRequestMaker() {
-        this(new HttpClient(), new HttpRequestMakerNotifier(notifier()));
+        this(new HttpClient(new HttpRequestMakerNotifier(new ConsoleNotifier(true))), new HttpRequestMakerNotifier(new ConsoleNotifier(true)));
     }
 
     protected HttpRequestMaker(HttpClient httpClient, HttpRequestMakerNotifier notifier) {

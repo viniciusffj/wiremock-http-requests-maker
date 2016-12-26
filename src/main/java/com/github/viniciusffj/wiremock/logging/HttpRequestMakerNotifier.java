@@ -22,4 +22,9 @@ public class HttpRequestMakerNotifier {
     private String formatMessage(String message) {
         return String.format("[http-request-maker]: %s", message);
     }
+
+    public void requestAttempt(HttpRequestParameters httpRequestParameters) {
+        String message = String.format("Request attempt: %s", httpRequestParameters);
+        this.notifier.info(formatMessage(message));
+    }
 }
