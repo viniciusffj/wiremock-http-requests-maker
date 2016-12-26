@@ -2,6 +2,7 @@ package com.github.viniciusffj.wiremock;
 
 import com.github.tomakehurst.wiremock.extension.Parameters;
 import com.github.tomakehurst.wiremock.http.ResponseDefinition;
+import com.github.viniciusffj.wiremock.helpers.HttpResponseBuilder;
 import com.github.viniciusffj.wiremock.helpers.ParametersBuilder;
 import com.github.viniciusffj.wiremock.http.HttpClient;
 import com.github.viniciusffj.wiremock.http.HttpClientResponse;
@@ -13,8 +14,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-
-import java.util.HashMap;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -33,8 +32,6 @@ public class HttpRequestMakerTest {
     @Before
     public void setUp() throws Exception {
         httpRequestMaker = new HttpRequestMaker(httpClient, notifier);
-
-        when(httpClient.execute(any(HttpRequestParameters.class))).thenReturn(HttpClientResponse.success(200, ""));
     }
 
     @Test
@@ -57,21 +54,39 @@ public class HttpRequestMakerTest {
 
     @Test
     public void should_make_get_call_when_has_url_parameter() throws Exception {
-        String url = "http://localhost:9000";
+        HttpClientResponse response = new HttpResponseBuilder().success();
+        when(httpClient.execute(any(HttpRequestParameters.class))).thenReturn(response);
 
         Parameters parameters = new ParametersBuilder()
-                .url(url)
+                .url("http://localhost:9000")
                 .method(HttpMethod.OPTIONS)
-                .header("Authentication", "Basic user:password")
                 .build();
 
         httpRequestMaker.transform(null, ResponseDefinition.ok(), null, parameters);
 
-        HashMap<String, String> expectedHeaders = new HashMap<String, String>() {{
-            put("Authentication", "Basic user:password");
-        }};
+        verify(notifier, times(1)).requestAttempt(any(HttpRequestParameters.class));
+
+        verify(httpClient, times(1)).execute(any(HttpRequestParameters.class));
+
+        verify(notifier, times(1)).successfulHttpResponse(response);
+    }
+
+    @Test
+    public void should_log_when_http_request_has_error() throws Exception {
+        HttpClientResponse response = new HttpResponseBuilder().error();
+        when(httpClient.execute(any(HttpRequestParameters.class))).thenReturn(response);
+
+        Parameters parameters = new ParametersBuilder()
+                .url("http://localhost:9002")
+                .method(HttpMethod.DELETE)
+                .build();
+
+        httpRequestMaker.transform(null, ResponseDefinition.ok(), null, parameters);
 
         verify(notifier, times(1)).requestAttempt(any(HttpRequestParameters.class));
+
         verify(httpClient, times(1)).execute(any(HttpRequestParameters.class));
+
+        verify(notifier, times(1)).errorHttpResponse(response);
     }
 }

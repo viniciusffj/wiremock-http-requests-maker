@@ -8,6 +8,7 @@ import com.github.tomakehurst.wiremock.extension.ResponseDefinitionTransformer;
 import com.github.tomakehurst.wiremock.http.Request;
 import com.github.tomakehurst.wiremock.http.ResponseDefinition;
 import com.github.viniciusffj.wiremock.http.HttpClient;
+import com.github.viniciusffj.wiremock.http.HttpClientResponse;
 import com.github.viniciusffj.wiremock.http.HttpRequestParameters;
 import com.github.viniciusffj.wiremock.logging.HttpRequestMakerNotifier;
 
@@ -37,7 +38,15 @@ public class HttpRequestMaker extends ResponseDefinitionTransformer {
 
         if (httpRequestParameters.hasRequestMakerParameter()) {
             this.notifier.requestAttempt(httpRequestParameters);
-            httpClient.execute(httpRequestParameters);
+
+            HttpClientResponse response = httpClient.execute(httpRequestParameters);
+
+            if (response.hasError()) {
+                this.notifier.errorHttpResponse(response);
+            } else {
+                this.notifier.successfulHttpResponse(response);
+            }
+
         } else {
             this.notifier.hasNoParameters();
         }
