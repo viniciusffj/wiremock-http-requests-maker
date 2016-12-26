@@ -50,4 +50,13 @@ public class HttpRequestMakerNotifierTest {
         String message = String.format("[http-request-maker]: Http response: {status=%s, body=%s}", response.getStatus(), response.getBody());
         verify(notifier, times(1)).info(message);
     }
+
+    @Test
+    public void should_log_error_http_response() throws Exception {
+        HttpClientResponse response = new HttpResponseBuilder().error();
+
+        httpRequestMakerNotifier.errorHttpResponse(response);
+
+        verify(notifier, times(1)).error("[http-request-maker]: Failed http response", response.getError());
+    }
 }

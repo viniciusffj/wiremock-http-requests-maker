@@ -6,4 +6,8 @@ public class HttpResponseBuilder {
     public HttpClientResponse success() {
         return HttpClientResponse.success(200, "{\"id\":\"123\"}");
     }
+
+    public HttpClientResponse error() {
+        return HttpClientResponse.error(new Exception());
+    }
 }

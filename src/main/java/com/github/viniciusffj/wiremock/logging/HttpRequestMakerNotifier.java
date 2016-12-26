@@ -28,4 +28,8 @@ public class HttpRequestMakerNotifier {
         String message = String.format("Http response: {status=%s, body=%s}", response.getStatus(), response.getBody());
         this.notifier.info(formatMessage(message));
     }
+
+    public void errorHttpResponse(HttpClientResponse response) {
+        this.notifier.error(formatMessage("Failed http response"), response.getError());
+    }
 }
