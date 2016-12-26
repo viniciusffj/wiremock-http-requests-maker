@@ -1,6 +1,7 @@
 package com.github.viniciusffj.wiremock.logging;
 
 import com.github.tomakehurst.wiremock.common.Notifier;
+import com.github.viniciusffj.wiremock.http.HttpClientResponse;
 import com.github.viniciusffj.wiremock.http.HttpRequestParameters;
 
 public class HttpRequestMakerNotifier {
@@ -20,6 +21,11 @@ public class HttpRequestMakerNotifier {
 
     public void requestAttempt(HttpRequestParameters httpRequestParameters) {
         String message = String.format("Request attempt: %s", httpRequestParameters);
+        this.notifier.info(formatMessage(message));
+    }
+
+    public void successfulHttpResponse(HttpClientResponse response) {
+        String message = String.format("Http response: {status=%s, body=%s}", response.getStatus(), response.getBody());
         this.notifier.info(formatMessage(message));
     }
 }

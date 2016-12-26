@@ -2,6 +2,8 @@ package com.github.viniciusffj.wiremock.logging;
 
 import com.github.tomakehurst.wiremock.common.Notifier;
 import com.github.viniciusffj.wiremock.helpers.HttpRequestParametersBuilder;
+import com.github.viniciusffj.wiremock.helpers.HttpResponseBuilder;
+import com.github.viniciusffj.wiremock.http.HttpClientResponse;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -37,5 +39,15 @@ public class HttpRequestMakerNotifierTest {
         httpRequestMakerNotifier.hasNoParameters();
 
         verify(notifier, times(1)).info("[http-request-maker]: No parameters were passed");
+    }
+
+    @Test
+    public void should_log_successful_http_response() throws Exception {
+        HttpClientResponse response = new HttpResponseBuilder().success();
+
+        httpRequestMakerNotifier.successfulHttpResponse(response);
+
+        String message = String.format("[http-request-maker]: Http response: {status=%s, body=%s}", response.getStatus(), response.getBody());
+        verify(notifier, times(1)).info(message);
     }
 }
