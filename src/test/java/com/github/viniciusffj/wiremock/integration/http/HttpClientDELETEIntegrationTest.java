@@ -29,18 +29,21 @@ public class HttpClientDELETEIntegrationTest {
     @Test
     public void should_make_successful_request() throws Exception {
         stubFor(delete(urlEqualTo("/my/resource"))
+                .withRequestBody(equalTo("body"))
                 .willReturn(aResponse()
                         .withStatus(200)));
 
         HttpRequestParameters httpRequestParameters = new HttpRequestParametersBuilder()
                 .url("http://localhost:8001/my/resource")
+                .body("body")
                 .method(HttpMethod.DELETE)
                 .build();
 
         HttpClientResponse response = httpClient.execute(httpRequestParameters);
 
         assertThat(response.hasError(), is(false));
-        verify(deleteRequestedFor(urlMatching("/my/resource")));
+        verify(deleteRequestedFor(urlMatching("/my/resource"))
+            .withRequestBody(equalTo("body")));
     }
 
 }

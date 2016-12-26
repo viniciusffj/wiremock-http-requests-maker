@@ -29,18 +29,21 @@ public class HttpClientPUTIntegrationTest {
     @Test
     public void should_make_successful_request() throws Exception {
         stubFor(put(urlEqualTo("/my/resource"))
+                .withRequestBody(equalTo("param=value"))
                 .willReturn(aResponse()
                         .withStatus(200)));
 
         HttpRequestParameters httpRequestParameters = new HttpRequestParametersBuilder()
                 .url("http://localhost:8007/my/resource")
+                .body("param=value")
                 .method(HttpMethod.PUT)
                 .build();
 
         HttpClientResponse response = httpClient.execute(httpRequestParameters);
 
         assertThat(response.hasError(), is(false));
-        verify(putRequestedFor(urlMatching("/my/resource")));
+        verify(putRequestedFor(urlMatching("/my/resource"))
+            .withRequestBody(equalTo("param=value")));
     }
 
 }

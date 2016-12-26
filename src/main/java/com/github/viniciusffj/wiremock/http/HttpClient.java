@@ -40,13 +40,19 @@ public class HttpClient {
                         .getHttpRequest();
                 break;
             case PUT:
-                request = Unirest.put(url);
+                request = Unirest.put(url)
+                        .body(parameters.getBody())
+                        .getHttpRequest();
                 break;
             case PATCH:
-                request = Unirest.patch(url);
+                request = Unirest.patch(url)
+                        .body(parameters.getBody())
+                        .getHttpRequest();
                 break;
             case DELETE:
-                request = Unirest.delete(url);
+                request = Unirest.delete(url)
+                        .body(parameters.getBody())
+                        .getHttpRequest();
                 break;
             case HEAD:
                 request = Unirest.head(url);

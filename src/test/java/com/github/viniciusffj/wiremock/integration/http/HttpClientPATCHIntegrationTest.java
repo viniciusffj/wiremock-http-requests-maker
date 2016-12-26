@@ -29,18 +29,21 @@ public class HttpClientPATCHIntegrationTest {
     @Test
     public void should_make_successful_request() throws Exception {
         stubFor(patch(urlEqualTo("/my/resource"))
+                .withRequestBody(equalTo("abc"))
                 .willReturn(aResponse()
                         .withStatus(200)));
 
         HttpRequestParameters httpRequestParameters = new HttpRequestParametersBuilder()
                 .url("http://localhost:8005/my/resource")
+                .body("abc")
                 .method(HttpMethod.PATCH)
                 .build();
 
         HttpClientResponse response = httpClient.execute(httpRequestParameters);
 
         assertThat(response.hasError(), is(false));
-        verify(patchRequestedFor(urlMatching("/my/resource")));
+        verify(patchRequestedFor(urlMatching("/my/resource"))
+                .withRequestBody(equalTo("abc")));
     }
 
 }
