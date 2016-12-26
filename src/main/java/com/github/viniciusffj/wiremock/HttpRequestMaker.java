@@ -18,7 +18,7 @@ public class HttpRequestMaker extends ResponseDefinitionTransformer {
 
     /* Used by wiremock */
     public HttpRequestMaker() {
-        this(new HttpClient(new HttpRequestMakerNotifier(new ConsoleNotifier(true))), new HttpRequestMakerNotifier(new ConsoleNotifier(true)));
+        this(new HttpClient(), new HttpRequestMakerNotifier(new ConsoleNotifier(true)));
     }
 
     protected HttpRequestMaker(HttpClient httpClient, HttpRequestMakerNotifier notifier) {

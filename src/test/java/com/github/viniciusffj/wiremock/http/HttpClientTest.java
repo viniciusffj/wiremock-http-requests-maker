@@ -1,8 +1,6 @@
 package com.github.viniciusffj.wiremock.http;
 
-import com.github.tomakehurst.wiremock.common.ConsoleNotifier;
 import com.github.viniciusffj.wiremock.helpers.HttpRequestParametersBuilder;
-import com.github.viniciusffj.wiremock.logging.HttpRequestMakerNotifier;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -12,7 +10,7 @@ public class HttpClientTest {
 
     @Before
     public void setUp() throws Exception {
-        httpClient = new HttpClient(new HttpRequestMakerNotifier(new ConsoleNotifier(true)));
+        httpClient = new HttpClient();
     }
 
     @Test(expected = IllegalArgumentException.class)

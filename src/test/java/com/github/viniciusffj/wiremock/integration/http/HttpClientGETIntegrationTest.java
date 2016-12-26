@@ -12,14 +12,12 @@ import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.mockito.Mockito.times;
 
 @RunWith(MockitoJUnitRunner.class)
 public class HttpClientGETIntegrationTest {
@@ -29,12 +27,9 @@ public class HttpClientGETIntegrationTest {
 
     private HttpClient httpClient;
 
-    @Mock
-    private HttpRequestMakerNotifier notifier;
-
     @Before
     public void setUp() throws Exception {
-        this.httpClient = new HttpClient(notifier);
+        this.httpClient = new HttpClient();
     }
 
     @Test
@@ -72,7 +67,5 @@ public class HttpClientGETIntegrationTest {
 
         assertThat(httpClientResponse.hasError(), is(true));
         assertThat(httpClientResponse.getError(), is(notNullValue()));
-
-        Mockito.verify(notifier, times(1)).requestAttempt(httpRequestParameters);
     }
 }

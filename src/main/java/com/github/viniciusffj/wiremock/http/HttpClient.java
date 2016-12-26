@@ -1,6 +1,5 @@
 package com.github.viniciusffj.wiremock.http;
 
-import com.github.viniciusffj.wiremock.logging.HttpRequestMakerNotifier;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.request.HttpRequest;
@@ -8,10 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 
 public class HttpClient {
 
-    private HttpRequestMakerNotifier notifier;
-
-    public HttpClient(HttpRequestMakerNotifier notifier) {
-        this.notifier = notifier;
+    public HttpClient() {
     }
 
     public HttpClientResponse execute(HttpRequestParameters httpRequestParameters) {
@@ -22,8 +18,6 @@ public class HttpClient {
         if (StringUtils.isEmpty(httpRequestParameters.getUrl())) {
             throw new IllegalArgumentException("Url can't be empty");
         }
-
-        this.notifier.requestAttempt(httpRequestParameters);
 
         try {
             HttpResponse<String> response = createHttpRequest(httpRequestParameters, httpRequestParameters.getMethod())
