@@ -8,18 +8,23 @@ import com.github.tomakehurst.wiremock.http.Request;
 import com.github.tomakehurst.wiremock.http.ResponseDefinition;
 import com.github.viniciusffj.wiremock.http.HttpClient;
 import com.github.viniciusffj.wiremock.http.HttpRequestParameters;
+import com.github.viniciusffj.wiremock.logging.HttpRequestMakerNotifier;
+
+import static com.github.tomakehurst.wiremock.common.LocalNotifier.notifier;
 
 public class HttpRequestMaker extends ResponseDefinitionTransformer {
 
     private HttpClient httpClient;
+    private HttpRequestMakerNotifier notifier;
 
     /* Used by wiremock */
     public HttpRequestMaker() {
-        this(new HttpClient());
+        this(new HttpClient(), new HttpRequestMakerNotifier(notifier()));
     }
 
-    protected HttpRequestMaker(HttpClient httpClient) {
+    protected HttpRequestMaker(HttpClient httpClient, HttpRequestMakerNotifier notifier) {
         this.httpClient = httpClient;
+        this.notifier = notifier;
     }
 
     @Override
@@ -32,7 +37,10 @@ public class HttpRequestMaker extends ResponseDefinitionTransformer {
         HttpRequestParameters httpRequestParameters = new HttpRequestParameters(parameters);
 
         if (httpRequestParameters.hasRequestMakerParameter()) {
+            this.notifier.hasParameters();
             httpClient.execute(httpRequestParameters);
+        } else {
+            this.notifier.hasNoParameters();
         }
 
         return ResponseDefinitionBuilder.like(responseDefinition).build();

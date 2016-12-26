@@ -7,6 +7,7 @@ import com.github.viniciusffj.wiremock.http.HttpClient;
 import com.github.viniciusffj.wiremock.http.HttpClientResponse;
 import com.github.viniciusffj.wiremock.http.HttpMethod;
 import com.github.viniciusffj.wiremock.http.HttpRequestParameters;
+import com.github.viniciusffj.wiremock.logging.HttpRequestMakerNotifier;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,12 +25,14 @@ public class HttpRequestMakerTest {
 
     @Mock
     private HttpClient httpClient;
+    @Mock
+    private HttpRequestMakerNotifier notifier;
 
     private HttpRequestMaker httpRequestMaker;
 
     @Before
     public void setUp() throws Exception {
-        httpRequestMaker = new HttpRequestMaker(httpClient);
+        httpRequestMaker = new HttpRequestMaker(httpClient, notifier);
 
         when(httpClient.execute(any(HttpRequestParameters.class))).thenReturn(HttpClientResponse.success());
     }
@@ -49,6 +52,7 @@ public class HttpRequestMakerTest {
         httpRequestMaker.transform(null, ResponseDefinition.ok(), null, new ParametersBuilder().empty());
 
         verify(httpClient, never()).execute(any(HttpRequestParameters.class));
+        verify(notifier, times(1)).hasNoParameters();
     }
 
     @Test
@@ -67,6 +71,7 @@ public class HttpRequestMakerTest {
             put("Authentication", "Basic user:password");
         }};
 
+        verify(notifier, times(1)).hasParameters();
         verify(httpClient, times(1)).execute(any(HttpRequestParameters.class));
     }
 }
