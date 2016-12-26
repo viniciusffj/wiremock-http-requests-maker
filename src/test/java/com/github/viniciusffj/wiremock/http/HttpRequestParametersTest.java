@@ -69,4 +69,26 @@ public class HttpRequestParametersTest {
         assertThat(headers.get("Content-Type"), is("application/json"));
         assertThat(headers.get("Location"), is("http://some.location.com"));
     }
+
+    @Test
+    public void get_body_should_return_empty_body_when_body_not_present() throws Exception {
+        Parameters build = new ParametersBuilder().build();
+
+        HttpRequestParameters httpRequestParameters = new HttpRequestParameters(build);
+
+        assertThat(httpRequestParameters.getBody(), is(""));
+    }
+
+    @Test
+    public void get_body_should_return_body_when_body_is_present() throws Exception {
+        String body = "param1=value1&param2=value2";
+        Parameters build = new ParametersBuilder()
+                .body(body)
+                .build();
+
+        HttpRequestParameters httpRequestParameters = new HttpRequestParameters(build);
+
+        assertThat(httpRequestParameters.getBody(), is(body));
+    }
+
 }

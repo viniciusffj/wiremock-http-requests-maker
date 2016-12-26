@@ -10,6 +10,7 @@ public class HttpRequestParameters {
     private static final String URL_PARAMETER = "url";
     private static final String METHOD_PARAMETER = "method";
     private static final String HEADER_PARAMETER = "headers";
+    private static final String BODY_PARAMETER = "body";
 
     private Parameters parameters;
 
@@ -43,14 +44,22 @@ public class HttpRequestParameters {
     }
 
     public Map<String, String> getHeaders() {
-        if (hasProperty(HEADER_PARAMETER)) {
+        if (hasParameter(HEADER_PARAMETER)) {
             return (Map<String, String>) getParameter(HEADER_PARAMETER);
         }
 
         return new HashMap<>();
     }
 
-    private boolean hasProperty(String propertyName) {
+    private boolean hasParameter(String propertyName) {
         return getHttpRequestMakerMap().containsKey(propertyName);
+    }
+
+    public String getBody() {
+        if (hasParameter(BODY_PARAMETER)) {
+            return getStringParameter(BODY_PARAMETER);
+        }
+
+        return "";
     }
 }
