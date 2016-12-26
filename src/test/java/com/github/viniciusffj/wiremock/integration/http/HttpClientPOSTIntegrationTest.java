@@ -29,18 +29,21 @@ public class HttpClientPOSTIntegrationTest {
     @Test
     public void should_make_successful_request() throws Exception {
         stubFor(post(urlEqualTo("/my/resource"))
+                .withRequestBody(equalTo("id=1232131"))
                 .willReturn(aResponse()
                         .withStatus(200)));
 
         HttpRequestParameters httpRequestParameters = new HttpRequestParametersBuilder()
                 .url("http://localhost:8006/my/resource")
+                .body("id=1232131")
                 .method(HttpMethod.POST)
                 .build();
 
         HttpClientResponse response = httpClient.execute(httpRequestParameters);
 
         assertThat(response.hasError(), is(false));
-        verify(postRequestedFor(urlMatching("/my/resource")));
+        verify(postRequestedFor(urlMatching("/my/resource"))
+                .withRequestBody(equalTo("id=1232131")));
     }
 
 }

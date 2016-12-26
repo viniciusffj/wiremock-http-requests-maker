@@ -22,6 +22,11 @@ public class HttpRequestParametersBuilder {
         return this;
     }
 
+    public HttpRequestParametersBuilder body(String body) {
+        this.parametersBuilder.body(body);
+        return this;
+    }
+
     public HttpRequestParameters build() {
         return new HttpRequestParameters(this.parametersBuilder.build());
     }

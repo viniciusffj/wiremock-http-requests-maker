@@ -16,7 +16,7 @@ public class HttpClient {
         }
 
         try {
-            createHttpRequest(httpRequestParameters.getUrl(), httpRequestParameters.getMethod())
+            createHttpRequest(httpRequestParameters, httpRequestParameters.getMethod())
                     .headers(httpRequestParameters.getHeaders())
                     .asString();
         } catch (Exception e) {
@@ -26,7 +26,8 @@ public class HttpClient {
         return HttpClientResponse.success();
     }
 
-    private HttpRequest createHttpRequest(String url, HttpMethod httpMethod) {
+    private HttpRequest createHttpRequest(HttpRequestParameters parameters, HttpMethod httpMethod) {
+        String url = parameters.getUrl();
         HttpRequest request = null;
 
         switch (httpMethod) {
@@ -34,7 +35,9 @@ public class HttpClient {
                 request = Unirest.get(url);
                 break;
             case POST:
-                request = Unirest.post(url);
+                request = Unirest.post(url)
+                        .body(parameters.getBody())
+                        .getHttpRequest();
                 break;
             case PUT:
                 request = Unirest.put(url);

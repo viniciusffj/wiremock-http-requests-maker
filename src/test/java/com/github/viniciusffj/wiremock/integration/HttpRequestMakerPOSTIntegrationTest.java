@@ -28,12 +28,14 @@ public class HttpRequestMakerPOSTIntegrationTest {
     public void setUp() throws Exception {
         serviceToBeInvoked.
                 stubFor(post(urlEqualTo("/resource"))
+                        .withRequestBody(equalTo("{ \"name\": \"Bill\" }"))
                         .willReturn(aResponse()
                                 .withStatus(200)));
 
         Map<String, Object> requestParameters = new ParametersBuilder()
                 .url("http://localhost:8013/resource")
                 .method(HttpMethod.POST)
+                .body("{ \"name\": \"Bill\" }")
                 .buildHttpRequestMakerParameters();
 
         serviceWithRequestMaker
@@ -52,6 +54,7 @@ public class HttpRequestMakerPOSTIntegrationTest {
                 .assertThat()
                 .statusCode(200);
 
-        serviceToBeInvoked.verify(postRequestedFor(urlMatching("/resource")));
+        serviceToBeInvoked.verify(postRequestedFor(urlMatching("/resource"))
+                    .withRequestBody(equalTo("{ \"name\": \"Bill\" }")));
     }
 }
