@@ -1,12 +1,14 @@
 package com.github.viniciusffj.wiremock.logging;
 
 import com.github.tomakehurst.wiremock.common.Notifier;
+import com.github.viniciusffj.wiremock.helpers.HttpRequestParametersBuilder;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import static org.mockito.ArgumentMatchers.contains;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -25,9 +27,9 @@ public class HttpRequestMakerNotifierTest {
 
     @Test
     public void should_log_when_has_parameters() throws Exception {
-        httpRequestMakerNotifier.hasParameters();
+        httpRequestMakerNotifier.hasParameters(new HttpRequestParametersBuilder().build());
 
-        verify(notifier, times(1)).info("[http-request-maker]: Parameters were passed");
+        verify(notifier, times(1)).info(contains("[http-request-maker]: Parameters were passed:"));
     }
 
     @Test

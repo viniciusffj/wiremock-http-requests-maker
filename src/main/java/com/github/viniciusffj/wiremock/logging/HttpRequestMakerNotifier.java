@@ -1,6 +1,7 @@
 package com.github.viniciusffj.wiremock.logging;
 
 import com.github.tomakehurst.wiremock.common.Notifier;
+import com.github.viniciusffj.wiremock.http.HttpRequestParameters;
 
 public class HttpRequestMakerNotifier {
     private Notifier notifier;
@@ -9,8 +10,9 @@ public class HttpRequestMakerNotifier {
         this.notifier = notifier;
     }
 
-    public void hasParameters() {
-        this.notifier.info(formatMessage("Parameters were passed"));
+    public void hasParameters(HttpRequestParameters httpRequestParameters) {
+        String message = String.format("Parameters were passed: %s", httpRequestParameters);
+        this.notifier.info(formatMessage(message));
     }
 
     public void hasNoParameters() {

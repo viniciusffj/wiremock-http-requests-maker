@@ -1,6 +1,8 @@
 package com.github.viniciusffj.wiremock.http;
 
 import com.github.tomakehurst.wiremock.extension.Parameters;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -62,4 +64,25 @@ public class HttpRequestParameters {
 
         return "";
     }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.JSON_STYLE)
+                .append("url", this.getUrl())
+                .append("method", this.getMethod())
+                .append("body", this.getBody())
+                .append("headers", this.headersToString(this.getHeaders()))
+                .build();
+    }
+
+    private String headersToString(Map<String, String> map) {
+        ToStringBuilder toStringBuilder = new ToStringBuilder(this, ToStringStyle.JSON_STYLE);
+
+        for (String key: map.keySet()) {
+            toStringBuilder.append(key, map.get(key));
+        }
+
+        return toStringBuilder.build();
+    }
+
 }
