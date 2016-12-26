@@ -26,10 +26,10 @@ public class HttpRequestMakerNotifierTest {
     }
 
     @Test
-    public void should_log_when_has_parameters() throws Exception {
-        httpRequestMakerNotifier.hasParameters(new HttpRequestParametersBuilder().build());
+    public void should_log_when_attempting_request() throws Exception {
+        httpRequestMakerNotifier.requestAttempt(new HttpRequestParametersBuilder().build());
 
-        verify(notifier, times(1)).info(contains("[http-request-maker]: Parameters were passed:"));
+        verify(notifier, times(1)).info(contains("[http-request-maker]: Request attempt:"));
     }
 
     @Test

@@ -10,11 +10,6 @@ public class HttpRequestMakerNotifier {
         this.notifier = notifier;
     }
 
-    public void hasParameters(HttpRequestParameters httpRequestParameters) {
-        String message = String.format("Parameters were passed: %s", httpRequestParameters);
-        this.notifier.info(formatMessage(message));
-    }
-
     public void hasNoParameters() {
         this.notifier.info(formatMessage("No parameters were passed"));
     }

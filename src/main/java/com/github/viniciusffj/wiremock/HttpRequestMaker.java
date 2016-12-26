@@ -36,7 +36,7 @@ public class HttpRequestMaker extends ResponseDefinitionTransformer {
         HttpRequestParameters httpRequestParameters = new HttpRequestParameters(parameters);
 
         if (httpRequestParameters.hasRequestMakerParameter()) {
-            this.notifier.hasParameters(httpRequestParameters);
+            this.notifier.requestAttempt(httpRequestParameters);
             httpClient.execute(httpRequestParameters);
         } else {
             this.notifier.hasNoParameters();

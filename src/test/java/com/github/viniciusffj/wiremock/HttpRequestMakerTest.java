@@ -71,7 +71,7 @@ public class HttpRequestMakerTest {
             put("Authentication", "Basic user:password");
         }};
 
-        verify(notifier, times(1)).hasParameters(any(HttpRequestParameters.class));
+        verify(notifier, times(1)).requestAttempt(any(HttpRequestParameters.class));
         verify(httpClient, times(1)).execute(any(HttpRequestParameters.class));
     }
 }
