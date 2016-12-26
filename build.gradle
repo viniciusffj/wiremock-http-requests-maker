@@ -8,6 +8,13 @@ repositories {
     mavenCentral()
 }
 
+jar {
+
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
+
 dependencies {
     compile 'org.slf4j:slf4j-api:1.7.21'
     compile group: 'com.github.tomakehurst', name: 'wiremock', version: '2.4.1'
