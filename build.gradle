@@ -13,7 +13,7 @@ apply plugin: "info.solidsoft.pitest"
 
 sourceCompatibility = 1.7
 group = 'com.github.viniciusffj.wiremock'
-version = '1.0'
+version = '0.1'
 
 repositories {
     mavenCentral()
