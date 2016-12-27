@@ -14,7 +14,8 @@ deploy:
   provider: releases
   api_key:
     secure: P/GBhmgDQgTMu14Bag9JUw3qX2mg1ptwqFLLTu9jEpr9SGM6ne1L3ghQoyegpyDfun5af+Vk9rR2hpvuDKvyfUq2gKA6wnz0xfIrhVLOdooFhKXxHktNp2HeJDW5vFsvGSceJlo8FftqbL9ZeZd6olXAIoquCrozrs72MY7MQjgBNkjTRAP63099Ai9zam1u5CKx2J5GevX/mO2hi4Eox7XJ8KacAbma88m8AKgOsOtoqnc58on9TECccmpzcBMayWep6oLKshBmqpPjbMA+aZJsyYzh5a7b+7NoUkzop/BtpkU9tbgzgYPNCzNYVudq40aaMctONtApy+WM8ZXolXfezlofUyXfFAZaIbVy4wmYxVcfroj3+MQBpRBfatOhy+ZOdjouZ+K53I61iSnUoZgWAuEMvLAwukLDiFi3Tp+eK59bAUSgY76z2xIuBaqfLOdy7w0q5x626Z4l75BQWxrFva1og/2sglJBbdz4W0OnkkMvF79MveQoIZE+hIi2o/XLGnNSzGcro54MjElvoUJk1G64N79wzfNiRGXS5BhB5Qgdx6qC+A/vI23mrJbAZDDekODVACNlBSxAuViORYmH8vMPULX1rOQ4FJlFcZeRzcl7SkM9ojgjXuCpExz+R97/Mljb9TTfaf4aeKQ7tyqYnpjWG8rZcLMUm4mRglo=
-  file: build/libs/wiremock-requests-maker-0.1.jar
+  file_glob: true
+  file: "build/libs/wiremock-requests-maker*.jar"
   skip_cleanup: true
   on:
     tags: true
