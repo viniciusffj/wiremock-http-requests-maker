@@ -15,7 +15,7 @@ This wiremock extension makes it possible to call another service from wiremock.
 
 Download the [wiremock jar](http://repo1.maven.org/maven2/com/github/tomakehurst/wiremock-standalone/2.4.1/wiremock-standalone-2.4.1.jar).
 
-Download the [extension jar](https://github.com/viniciusffj/wiremock-http-requests-maker/releases/download/0.1/wiremock-requests-maker-0.1.jar).
+Download the [extension jar](https://github.com/viniciusffj/wiremock-http-requests-maker/releases/download/v0.1/wiremock-requests-maker-0.1.jar).
 
 Start wiremock by running:
 ```
